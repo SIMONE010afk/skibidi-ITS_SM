@@ -16,5 +16,7 @@ int main()
 
     printf("Benvenuto, %s %s !\nGrazie per aver usato il nostro programma.\nTi auguriamo Buone Feste\n*\n", name, cognome);
 
+    printf("\n\n\t   \n\t  *\n\t **\n\t***\n\t  *");
+    
     return 0;
 }
