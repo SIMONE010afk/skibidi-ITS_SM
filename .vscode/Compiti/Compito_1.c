@@ -1,4 +1,6 @@
+
 #include <stdio.h>
+#include <stdbool.h>
 
 int main()
 {
@@ -14,9 +16,9 @@ int main()
 
     scanf("%s", cognome);
 
-    printf("Benvenuto, %s %s !\nGrazie per aver usato il nostro programma.\nTi auguriamo Buone Feste\n*\n", name, cognome);
+    printf("Benvenuto, %s %s !\nGrazie per aver usato il nostro programma.\nTi auguriamo Buone Feste\n", name, cognome);
 
-    printf("\n\t   *\n\t  ***\n\t *****\n\t*******\n\t  ***");
+    printf("\n\t   *\n\t  ***\n\t *****\n\t*******\n\t  ***\n");
     
     return 0;
 }
