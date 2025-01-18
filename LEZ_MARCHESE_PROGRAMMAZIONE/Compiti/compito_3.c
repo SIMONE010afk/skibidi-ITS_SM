@@ -6,10 +6,13 @@
 #define DIVISIONE(x,y) x / y
 #define MODULO(x,y) x%y
 #define NEW_LINE printf("\n");
+#define STAMPA_NOME(nome) printf("Ciao %s\n", #nome)
 
 int main()
 {
     int x, y;
+
+    STAMPA_NOME(Simone Torrengo);
 
     printf("inserisci x: ");
 
