@@ -9,6 +9,7 @@
 */
 
 #include <stdio.h>
+#include <time.h>
 
 //define or comment these #define to apply/disable the funciots
 #define CALCOLO_PENALE
@@ -16,6 +17,8 @@
 
 //macro to calculate the fine (10%) if u pay late 
 #define CALCOLA_PENALE(x) ((x) * 0.10)
+
+int calcola_differenza_giorni(int anno1, int mese1, int giorno1, int anno2, int mese2, int giorno2);
 
 //expence of the month
 #define SOGLIA 1000.0
@@ -27,7 +30,12 @@ int main() {
     float elettricita, acqua, gas, internet;
     float totale = 0.0, penale = 0.0;
 
-// Input delle spese
+//calculating dates of payment
+    int giorno_pagamento, mese_pagamento, anno_pagamento;
+    int giorno_dovuto, mese_dovuto, anno_dovuto;
+    int giorni_di_ritardo;
+
+// Input expences
     printf("Inserisci la spesa per l'elettricità: ");
     scanf("%f", &elettricita);
     printf("Inserisci la spesa per l'acqua: ");
@@ -37,26 +45,41 @@ int main() {
     printf("Inserisci la spesa per internet: ");
     scanf("%f", &internet);
 
-// Calcolo del totale
+//Clculating the total amount
     totale = elettricita + acqua + gas + internet;
 
+// Input the actual date
+    printf("Inserisci la data del pagamento (gg mm aaaa): ");
+    scanf("%d %d %d", &giorno_pagamento, &mese_pagamento, &anno_pagamento);
+
+// Input when the dead line is/was
+    printf("Inserisci la data di scadenza del pagamento (gg mm aaaa): ");
+    scanf("%d %d %d", &giorno_dovuto, &mese_dovuto, &anno_dovuto);
+
+    NEW_LINE;
+
+//Calculating the difference of the dates
+    giorni_di_ritardo = calcola_differenza_giorni(
+        anno_dovuto, mese_dovuto, giorno_dovuto,
+        anno_pagamento, mese_pagamento, giorno_pagamento
+    );
+
+// If there is a delay calculate the fine
     #ifdef CALCOLO_PENALE
-
-// Calcolo della penale per ritardi nei pagamenti
-    penale = CALCOLA_PENALE(totale);
-    #ifdef DEBUG
-    printf("[DEBUG] Penale calcolata: %.2f\n", penale);
-    #endif
+    if (giorni_di_ritardo > 0) {
+        penale = CALCOLA_PENALE(totale);
+        printf("Pagamento in ritardo di %d giorni. \nPenale calcolata: %.2f\n", giorni_di_ritardo, penale);
+    } else {
+        printf("Pagamento effettuato in tempo. Nessuna penale applicata.\n");
+    }
     #else
-    #ifdef DEBUG
-    printf("[DEBUG] Calcolo della penale disabilitato.\n");
-    #endif
+    printf("Calcolo della penale disabilitato.\n");
     #endif
 
-// Determinazione della spesa totale (con o senza penale)
+//Checking the total amount (with or without the fine)
     float totale_finale = totale + penale;
 
-//Check if the total expence exceeds the SOGLIA
+//Check if the total expences exceeds the SOGLIA
     if (totale_finale > SOGLIA) {
         printf("Attenzione: La spesa totale (%.2f) supera la soglia di %.2f!\n", totale_finale, SOGLIA);
     } else {
@@ -74,6 +97,7 @@ int main() {
     if (gas > spesa_maggiore) { spesa_maggiore = gas; categoria_maggiore = 3; }
     if (internet > spesa_maggiore) { spesa_maggiore = internet; categoria_maggiore = 4; }
 
+//Which is the actual input that is too high
     switch (categoria_maggiore) {
         case 1:
             printf("Riduci il consumo di elettricità.\n");
@@ -92,7 +116,7 @@ int main() {
             break;
     }
 
-// Riepilogo finale
+//Summary of the expences
     printf("\n--- Riepilogo finale ---\n");
     printf("Elettricità: %.2f\n", elettricita);
     printf("Acqua: %.2f\n", acqua);
@@ -101,10 +125,32 @@ int main() {
     #ifdef CALCOLO_PENALE
     printf("Penale: %.2f\n", penale);
     #endif
-    printf("Totale (con penale, se applicabile): %.2f\n", totale_finale);
+    printf("Totale: %.2f\n", totale_finale);
 
 
     NEW_LINE;
     NEW_LINE;
     return 0;
+}
+
+//Function to calculate the difference in days between 2 dates
+int calcola_differenza_giorni(int anno1, int mese1, int giorno1, int anno2, int mese2, int giorno2) {
+    struct tm data1 = {0}, data2 = {0};
+    time_t t1, t2;
+
+//Input your dates
+    data1.tm_year = anno1 - 1900; // tm_year is the year from 1900
+    data1.tm_mon = mese1 - 1;     // tm_mon goes from 0 to 11
+    data1.tm_mday = giorno1;
+
+    data2.tm_year = anno2 - 1900;
+    data2.tm_mon = mese2 - 1;
+    data2.tm_mday = giorno2;
+
+//Convert the date in epoch time
+    t1 = mktime(&data1);
+    t2 = mktime(&data2);
+
+//Calculating the difference in seconds and transform it into days
+    return (int)difftime(t2, t1) / (60 * 60 * 24);
 }
