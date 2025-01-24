@@ -34,6 +34,7 @@ int main() {
         if (scanf("%d", &tentativo) == 1 && tentativo > 0) {
             tentativi++; // tentativi auto-increase
 
+            // if to see if the input number is higher or lower than rand or u got it
             if (tentativo > numeroSegreto) {
                 printf("Troppo alto! Riprova.\n");
             } else if (tentativo < numeroSegreto) {

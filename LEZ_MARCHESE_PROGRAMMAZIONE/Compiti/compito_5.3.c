@@ -22,16 +22,21 @@ int main() {
     while (x > 0){
 
     do {
+
+// insert the numbers
     printf("Inserisci un numero (= 0 per uscire): ");
     scanf("%d", &x);
 
     } while (x < 0); 
 
+//define sum
     somma = somma + x;
 
+// define max
     if (x > max)
         max = x;
 
+//define cont
     if (x != 0)
         cont ++;
 
@@ -39,6 +44,7 @@ int main() {
         printf("nessun numero valido\n");
     }
 
+//print output
     printf("la somma è: %d\nil massimo è: %d\nla lunghezza della sequenza è: %d", somma, max, cont);
 
     NEW_LINE;
