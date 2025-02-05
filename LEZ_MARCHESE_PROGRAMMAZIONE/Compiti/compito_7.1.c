@@ -29,7 +29,7 @@ int main() {
     float risultato;
 
     do {
-        // Mostra il menu
+        //show the menu
         printf("\n--- MENU ---\n");
         printf("1. Addizione (+)\n");
         printf("2. Sottrazione (-)\n");
@@ -40,14 +40,14 @@ int main() {
         scanf("%d", &scelta);
 
         if (scelta >= 1 && scelta <= 4) {
-            // Chiede i numeri all'utente
+            //ask for the numbers to the user
             printf("Inserisci il primo numero: ");
             scanf("%d", &num1);
             printf("Inserisci il secondo numero: ");
             scanf("%d", &num2);
         }
 
-                // Esegue l'operazione scelta
+//launch the operation chosen
         switch (scelta) {
             case 1:
                 risultato = add(num1, num2);
