@@ -20,6 +20,7 @@ tutte le stringhe contengono almeno una vocale (a, e, i, o, u maiuscole o minusc
 #include <stdio.h>
 #include "compito_7.2.h"
 
+
 int main() {
     char strings[SIZE][MAX_LEN] = {"Anna", "banana", "apple", "A1pha", "racecar", "123"};
 
@@ -62,3 +63,5 @@ int main() {
 
     return 0;
 }
+
+

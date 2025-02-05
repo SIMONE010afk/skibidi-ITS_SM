@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "stdio.h": "c",
-        "array": "c"
+        "array": "c",
+        "random": "c"
     }
 }
