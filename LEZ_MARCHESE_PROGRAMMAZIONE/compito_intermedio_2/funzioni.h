@@ -83,7 +83,7 @@ void count_total_characters(char words[][MAX_LEN]) {
 
 //6 print in the corrent order and the other way
 int compare(const void *a, const void *b) {
-    return strlen((char *)a) - strlen((char *)b);  // Confronta le lunghezze
+    return strlen((char *)a) - strlen((char *)b);  // compare lengh
 }
 
 void print_original_order(char words[][MAX_LEN]) {
@@ -100,7 +100,7 @@ void print_original_order(char words[][MAX_LEN]) {
 void print_reverse_order(char words[][MAX_LEN]) {
     printf("Elenco delle stringhe in ordine inverso:\n");
     for (int i = SIZE - 1; i >= 0; i--) {
-        printf("%s\n", words[i]);  // Stampa ogni parola su una nuova riga
+        printf("%s\n", words[i]); 
     }
 }
 
@@ -110,8 +110,8 @@ void print_reverse_order_with_reversed_strings(char words[][MAX_LEN]) {
     for (int i = SIZE - 1; i >= 0; i--) {
         // Stampa la parola invertita
         for (int j = strlen(words[i]) - 1; j >= 0; j--) {
-            putchar(words[i][j]);  // Stampa carattere per carattere
+            putchar(words[i][j]);  
         }
-        printf("\n");  // Vai a capo dopo ogni parola invertita
+        printf("\n");  
     }
 }
