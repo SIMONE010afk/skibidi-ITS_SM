@@ -3,7 +3,7 @@
 #include "funzioni.h"
 
 int main() {
-    int matrix[2][3][3] = {
+    int matrix[LAYERS][ROWS][COLS] = {
         {
             {1,  4,  7},
             {2,  5,  8},
@@ -15,22 +15,30 @@ int main() {
             {3,  5,  9}  // Il numero 5 è ripetuto volutamente
         }
     };
-
-    printf("Matrice originale:\n");
-    print_matrix(matrix);
-
-    // Controllo Sudoku PRIMA della trasformazione
-    for (int i = 0; i < 2; i++) {
-        if (is_perfect_sudoku(matrix)) {
-            printf("\nLa matrice %d è un Sudoku perfetto.\n", i + 1);
+    
+    // Verifica Sudoku per ogni strato
+    for (int k = 0; k < LAYERS; k++) {
+        if (is_perfect_sudoku(matrix[k])) {
+            printf("La matrice %d e' un Sudoku perfetto.\n", k + 1);
         } else {
-            printf("\nLa matrice %d non è un Sudoku perfetto.\n", i + 1);
+            printf("La matrice %d NON e' un Sudoku perfetto.\n", k + 1);
         }
     }
-
-    transform_matrix(matrix);
-    printf("\nDopo sostituzione pari/dispari:\n");
-    print_matrix(matrix);
-
+    
+    // Modifica la matrice
+    modify_matrix(matrix);
+    
+    // Stampa la matrice modificata
+    printf("Matrice modificata:\n");
+    for (int k = 0; k < LAYERS; k++) {
+        printf("Strato %d:\n", k + 1);
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                printf("%2d ", matrix[k][i][j]);
+            }
+            printf("\n");
+        }
+    }
+    
     return 0;
 }

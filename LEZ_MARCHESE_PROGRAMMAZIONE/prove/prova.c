@@ -1,107 +1,74 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#define SIZE 3  // 3x3 Sudoku (per ogni blocco)
-#define LAYERS 2 // Numero di blocchi 3x3 (esempio con 2 blocchi)
+#define LAYERS 2
+#define ROWS 3
+#define COLS 3
 
-// Funzione per verificare se un blocco (layer) 3x3 è un Sudoku valido
-bool is_sudoku_layer_valid(int matrix[LAYERS][SIZE][SIZE], int layer_index) {
-    int seen[10] = {0}; // Array per segnare numeri visti (1-9)
-   
-    // Controlla il blocco (layer) 3x3
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            int value = matrix[layer_index][i][j];
-            // Verifica se il numero è nell'intervallo valido (1-9)
-            if (value < 1 || value > 9) {
-                printf("Numero fuori dal range [1-9] in layer %d\n", layer_index + 1);
-                return false;
+// Funzione per modificare la matrice sostituendo gli elementi pari con -1 e dispari con 1
+void modify_matrix(int matrix[LAYERS][ROWS][COLS]) {
+    for (int k = 0; k < LAYERS; k++) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                matrix[k][i][j] = (matrix[k][i][j] % 2 == 0) ? -1 : 1;
             }
-            // Verifica se il numero è già stato visto (duplicato)
-            if (seen[value] == 1) {
-                printf("Duplicato trovato nel layer %d\n", layer_index + 1);
-                return false;
+        }
+    }
+}
+
+// Funzione per verificare se una matrice 3x3 è un Sudoku perfetto
+bool is_perfect_sudoku(int matrix[ROWS][COLS]) {
+    bool seen[10] = {false}; // Indice 0 non usato (numeri validi: 1-9)
+    
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            int val = matrix[i][j];
+            if (val < 1 || val > 9 || seen[val]) {
+                return false; // Numero fuori intervallo o ripetuto
             }
-            seen[value] = 1;  // Marca il numero come visto
+            seen[val] = true;
         }
     }
     return true;
 }
 
-// Funzione per verificare se una riga contiene numeri unici
-bool is_row_valid(int matrix[LAYERS][SIZE][SIZE], int layer_index, int row_index) {
-    int seen[10] = {0}; // Array per segnare numeri visti (1-9)
-    for (int j = 0; j < SIZE; j++) {
-        int value = matrix[layer_index][row_index][j];
-        // Verifica se il numero è nell'intervallo valido (1-9)
-        if (value < 1 || value > 9) {
-            return false;
+int main() {
+    int matrix[LAYERS][ROWS][COLS] = {
+        {
+            {1,  4,  7},
+            {2,  5,  8},
+            {3,  6,  9}
+        },
+        {
+            {1,  4,  7},
+            {2,  5,  8},
+            {3,  5,  9}  // Il numero 5 è ripetuto volutamente
         }
-        // Verifica se il numero è già stato visto (duplicato)
-        if (seen[value] == 1) {
-            return false;
-        }
-        seen[value] = 1;  // Marca il numero come visto
-    }
-    return true;
-}
-
-// Funzione per verificare se una colonna contiene numeri unici
-bool is_column_valid(int matrix[LAYERS][SIZE][SIZE], int layer_index, int col_index) {
-    int seen[10] = {0}; // Array per segnare numeri visti (1-9)
-    for (int i = 0; i < SIZE; i++) {
-        int value = matrix[layer_index][i][col_index];
-        // Verifica se il numero è nell'intervallo valido (1-9)
-        if (value < 1 || value > 9) {
-            return false;
-        }
-        // Verifica se il numero è già stato visto (duplicato)
-        if (seen[value] == 1) {
-            return false;
-        }
-        seen[value] = 1;  // Marca il numero come visto
-    }
-    return true;
-}
-
-// Funzione per verificare se la matrice è un Sudoku valido
-bool is_sudoku_valid(int matrix[LAYERS][SIZE][SIZE]) {
-    // Verifica ogni blocco (layer)
-    for (int i = 0; i < LAYERS; i++) {
-        if (!is_sudoku_layer_valid(matrix, i)) {
-            return false; // Se un layer non è valido, restituisci false
+    };
+    
+    // Verifica Sudoku per ogni strato
+    for (int k = 0; k < LAYERS; k++) {
+        if (is_perfect_sudoku(matrix[k])) {
+            printf("La matrice %d e' un Sudoku perfetto.\n", k + 1);
+        } else {
+            printf("La matrice %d NON e' un Sudoku perfetto.\n", k + 1);
         }
     }
-
-    // Verifica ogni riga e colonna di ogni layer
-    for (int i = 0; i < LAYERS; i++) {
-        for (int row = 0; row < SIZE; row++) {
-            if (!is_row_valid(matrix, i, row)) {
-                printf("Riga %d nel layer %d non è valida\n", row + 1, i + 1);
-                return false; // Se una riga non è valida, restituisci false
-            }
-        }
-
-        for (int col = 0; col < SIZE; col++) {
-            if (!is_column_valid(matrix, i, col)) {
-                printf("Colonna %d nel layer %d non è valida\n", col + 1, i + 1);
-                return false; // Se una colonna non è valida, restituisci false
-            }
-        }
-    }
-    return true; // Se tutti i controlli sono passati, è un Sudoku valido
-}
-
-// Funzione per stampare la matrice
-void print_matrix(int matrix[LAYERS][SIZE][SIZE]) {
-    for (int i = 0; i < LAYERS; i++) {
-        printf("Layer %d:\n", i + 1);
-        for (int j = 0; j < SIZE; j++) {
-            for (int k = 0; k < SIZE; k++) {
-                printf("%d ", matrix[i][j][k]);
+    
+    // Modifica la matrice
+    modify_matrix(matrix);
+    
+    // Stampa la matrice modificata
+    printf("Matrice modificata:\n");
+    for (int k = 0; k < LAYERS; k++) {
+        printf("Strato %d:\n", k + 1);
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                printf("%2d ", matrix[k][i][j]);
             }
             printf("\n");
         }
-        printf("\n");
     }
+    
+    return 0;
 }
