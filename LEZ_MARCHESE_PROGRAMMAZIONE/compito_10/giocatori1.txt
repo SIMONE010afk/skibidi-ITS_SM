@@ -1,0 +1,5 @@
+LeBron_James 23 27.5 7.4 7.9
+Stephen_Curry 30 29.1 5.2 6.3
+Giannis_Antetokounmpo 34 28.9 11.2 5.8
+Kevin_Durant 7 26.9 6.8 5.4
+Luka_Doncic 77 28.3 9.1 8.5
